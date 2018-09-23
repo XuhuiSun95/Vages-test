@@ -48,6 +48,21 @@ static void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
     fclose(f);
 }
 
+static void yuv_save(AVFrame *frame, char *filename)
+{
+    FILE *f;
+    int i;
+
+    f = fopen(filename, "w");
+    for (i = 0; i < frame->height; i++)
+        fwrite(frame->data[0] + i * frame->linesize[0], 1, frame->width, f);
+    for (i = 0; i < frame->height/2; i++)
+        fwrite(frame->data[1] + i * frame->linesize[1], 1, frame->width/2, f);
+    for (i = 0; i < frame->height; i++)
+        fwrite(frame->data[2] + i * frame->linesize[2], 1, frame->width/2, f);
+    fclose(f);
+}
+
 static void decode(AVCodecContext *dec_ctx, AVFrame *frame, AVPacket *pkt,
                    const char *filename)
 {
@@ -77,6 +92,7 @@ static void decode(AVCodecContext *dec_ctx, AVFrame *frame, AVPacket *pkt,
         snprintf(buf, sizeof(buf), "%s-%d", filename, dec_ctx->frame_number);
         pgm_save(frame->data[0], frame->linesize[0],
                  frame->width, frame->height, buf);
+        //yuv_save(frame, buf);
     }
 }
 
@@ -109,7 +125,7 @@ int main(int argc, char **argv)
     memset(inbuf + INBUF_SIZE, 0, AV_INPUT_BUFFER_PADDING_SIZE);
 
     /* find the MPEG-1 video decoder */
-    codec = avcodec_find_decoder(AV_CODEC_ID_MPEG1VIDEO);
+    codec = avcodec_find_decoder(AV_CODEC_ID_H264);
     if (!codec) {
         fprintf(stderr, "Codec not found\n");
         exit(1);

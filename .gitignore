@@ -21,7 +21,13 @@
 *.a
 *.lib
 
+# Debug symbols file
+*.DSYM
+
 # Executables
 *.exe
 *.out
 *.app
+server_tcp
+client_tcp
+Test
