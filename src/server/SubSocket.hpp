@@ -14,11 +14,14 @@ public:
     ~SubSocket();
 
     std::string GetMessage();
+    int SendCount();
+    void UpdateCount();
     void SendMessage(const std::string& msg);
     void Disconn();
 
 private:
 
+    int mSendCount;
     int mSockfd, mValread;
     char mBuffer[1024];
 };

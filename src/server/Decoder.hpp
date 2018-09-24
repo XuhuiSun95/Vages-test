@@ -7,11 +7,10 @@ extern "C" {
 #include <libavutil/timestamp.h>
 #include <libavformat/avformat.h>
 }
-#include <thread>
-#include <chrono>
 #include <string>
 #include <cstring>
 #include <iostream>
+#include <atomic>
 
 class Decoder {
 
@@ -21,7 +20,7 @@ public:
     static void Release();
 
     void Run();
-    std::string Output();
+    int GetCount();
 
 private:
 
@@ -41,7 +40,7 @@ private:
     int video_stream_idx;
     AVPacket pkt;
     AVFrame* frame;
-    int video_frame_count;
+    std::atomic<int> video_frame_count;
     int output_count;
     
     Decoder(const std::string& file);

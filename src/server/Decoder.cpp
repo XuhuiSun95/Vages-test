@@ -16,11 +16,6 @@ void Decoder::Release() {
     sInstance = nullptr;
 }
 
-std::string Decoder::Output() {
-
-    return " ";
-}
-
 Decoder::Decoder(const std::string& file) {
 
     src_filename = file.c_str();
@@ -111,6 +106,11 @@ void Decoder::Run() {
     } while (got_frame);
 
     std::cout << "Decode succeeded" << std::endl;
+}
+
+int Decoder::GetCount() {
+
+    return video_frame_count;
 }
 
 void Decoder::Init() {
@@ -228,6 +228,7 @@ int Decoder::decode_packet(int* got_frame, int cached) {
             /* write to pgm file */
             snprintf(buf, sizeof(buf), "img_processed/output-%d.pgm", video_dec_ctx->frame_number);
             pgm_save(video_dst_data[0], video_dst_linesize[0], width, height, buf);
+            video_frame_count = video_dec_ctx->frame_number;
         }
     }
 

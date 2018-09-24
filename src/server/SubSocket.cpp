@@ -2,6 +2,7 @@
 
 SubSocket::SubSocket(const int& sockfd) {
 
+    mSendCount = 0;
     memset(mBuffer, 0, sizeof(mBuffer));
     mSockfd = sockfd;
 }
@@ -21,6 +22,16 @@ std::string SubSocket::GetMessage() {
     memset(mBuffer, 0, sizeof(mBuffer));
 
     return message;
+}
+
+int SubSocket::SendCount() {
+    
+    return mSendCount;
+}
+
+void SubSocket::UpdateCount() {
+
+    mSendCount++;
 }
 
 void SubSocket::SendMessage(const std::string& msg) {

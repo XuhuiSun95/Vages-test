@@ -4,6 +4,8 @@
 #include "ServerSocket.hpp"
 #include "SubSocket.hpp"
 #include "Decoder.hpp"
+#include <thread>
+#include <chrono>
 
 class ServerManager {
 
@@ -22,12 +24,14 @@ private:
     int mPort;
     ServerSocket* mSocket; 
     Decoder* mDecoder;
+    int mSavedImg;
 
     ServerManager(const int& port, const std::string& file);
     ~ServerManager();
 
     // handler
-    void Update();
+    void Decode();
+    void UpdateCount();
     void NewConn(const int& sockfd);
 };
 
