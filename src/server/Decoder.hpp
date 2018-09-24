@@ -27,8 +27,6 @@ private:
 
     static Decoder* sInstance;
 
-    //TODO
-    //int i;
     const char* src_filename;
     AVFormatContext* fmt_ctx;
     AVCodecContext* video_dec_ctx;

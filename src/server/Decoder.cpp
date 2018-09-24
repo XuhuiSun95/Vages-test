@@ -226,7 +226,7 @@ int Decoder::decode_packet(int* got_frame, int cached) {
                           pix_fmt, width, height);
 
             /* write to pgm file */
-            snprintf(buf, sizeof(buf), "%s-%d.pgm", "output", video_dec_ctx->frame_number);
+            snprintf(buf, sizeof(buf), "img_processed/output-%d.pgm", video_dec_ctx->frame_number);
             pgm_save(video_dst_data[0], video_dst_linesize[0], width, height, buf);
         }
     }

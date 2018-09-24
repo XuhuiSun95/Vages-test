@@ -30,4 +30,8 @@
 *.app
 server_tcp
 client_tcp
-Test
+test
+
+# Img file
+img_processed/*
+!img_processed/.gitkeep

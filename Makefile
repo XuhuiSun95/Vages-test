@@ -17,4 +17,4 @@ test:
 	$(CXX) $(CXXFLAGS) $(CFLAGS) src/demuxing_decoding.cpp -o test $(LDFLAGS)
 
 clean:
-	$(RM) server_tcp client_tcp test *.dSYM
+	$(RM) server_tcp client_tcp test *.dSYM img_processed/output*
