@@ -65,9 +65,10 @@ void ServerManager::NewConn(const int& sockfd) {
         std::this_thread::sleep_for(std::chrono::seconds(4));
         conn->SendMessage(mDecoder->Output());
         msg = conn->GetMessage();
+        if(msg=="error")
+            break;
         std::cout << msg << std::endl;
     }
     conn->Disconn();
-    //delete canvas;
     delete conn;
 }

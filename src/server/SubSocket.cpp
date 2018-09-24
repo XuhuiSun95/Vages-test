@@ -12,6 +12,9 @@ SubSocket::~SubSocket() {
 std::string SubSocket::GetMessage() {
 
     mValread = read(mSockfd, mBuffer, 1024);
+    if(mValread<0) {
+        return "error";
+    }
     std::string message = "Receive from sock#" +
                           std::to_string(mSockfd) +
                           ":" +mBuffer;
