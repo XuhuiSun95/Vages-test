@@ -22,7 +22,7 @@ void ServerManager::Run() {
     std::thread t(&ServerManager::Update, this);
     t.detach();
 
-    while(true) {
+    while(mSocket->Valid()) {
 
         int sockfd = mSocket->Accept();
         std::thread t(&ServerManager::NewConn, this, sockfd);
@@ -57,15 +57,15 @@ void ServerManager::NewConn(const int& sockfd) {
     SubSocket* conn = new SubSocket(sockfd);
     conn->SendMessage("hello\r\n");
 
-    //std::string msg = conn->GetMessage();
-    //while(msg!="quit\r\n") {
-    while(1) {
-        //std::cout << msg << std::endl;
+    std::string msg;
+    while(msg!="quit\r\n") {
+    //while(1) {
         //canvas->Update(msg);
         //conn->SendMessage(canvas->Output());
         std::this_thread::sleep_for(std::chrono::seconds(4));
         conn->SendMessage(mDecoder->Output());
-        //msg = conn->GetMessage();
+        msg = conn->GetMessage();
+        std::cout << msg << std::endl;
     }
     conn->Disconn();
     //delete canvas;
