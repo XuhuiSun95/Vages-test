@@ -2,10 +2,10 @@
 
 ServerManager* ServerManager::sInstance = nullptr;
 
-ServerManager* ServerManager::Instance(const int& port) {
+ServerManager* ServerManager::Instance(const int& port, const std::string& file) {
 
     if(sInstance==nullptr)
-        sInstance = new ServerManager(port);
+        sInstance = new ServerManager(port, file);
 
     return sInstance;
 }
@@ -30,12 +30,12 @@ void ServerManager::Run() {
     }
 }
 
-ServerManager::ServerManager(const int& port) {
+ServerManager::ServerManager(const int& port, const std::string& file) {
 
     mPort = port;
 
     mSocket = ServerSocket::Instance();
-    mDecoder = Decoder::Instance();
+    mDecoder = Decoder::Instance(file);
 }
 
 ServerManager::~ServerManager() {

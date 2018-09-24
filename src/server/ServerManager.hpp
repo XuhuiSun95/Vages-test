@@ -9,7 +9,7 @@ class ServerManager {
 
 public:
 
-    static ServerManager* Instance(const int& port);
+    static ServerManager* Instance(const int& port, const std::string& file);
     static void Release();
 
     void Run();
@@ -23,7 +23,7 @@ private:
     ServerSocket* mSocket; 
     Decoder* mDecoder;
 
-    ServerManager(const int& port);
+    ServerManager(const int& port, const std::string& file);
     ~ServerManager();
 
     // handler

@@ -1,11 +1,17 @@
 #include "ServerManager.hpp"
 #include <signal.h>
 
-int main() {
+int main(int argc, char* argv[]) {
 
     signal(SIGPIPE, SIG_IGN);
 
-    ServerManager* server = ServerManager::Instance(8124);
+    if(argc!=2) {
+
+        std::cerr << "Usage: " << argv[0] << "input_file" << std::endl;
+        return 1;
+    }
+
+    ServerManager* server = ServerManager::Instance(8124, argv[1]);
 
     server->Run();
 
