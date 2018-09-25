@@ -68,21 +68,36 @@ void ServerManager::UpdateCount() {
 void ServerManager::NewConn(const int& sockfd) {
 
     SubSocket* conn = new SubSocket(sockfd);
-    conn->SendMessage("hello\r\n");
+    conn->SendMessage("hello");
 
     std::string msg;
-    while(msg!="quit\r\n") {
+    while(msg!="quit") {
 
         if(conn->SendCount()>=mSavedImg) {
-            if(mDecoder==nullptr)
+            if(mDecoder==nullptr) {
+                conn->SendMessage("done");
                 break;
+            }
             else
                 std::this_thread::sleep_for(std::chrono::seconds(2));
         } else {
-            conn->SendMessage("Sending [" +
-                              std::to_string(conn->SendCount()+1) +
-                              "] frame(s).");
             conn->UpdateCount();
+            std::string filename = "img_processed/output-" +
+                                   std::to_string(conn->SendCount()) +
+                                   ".pgm";
+            std::ifstream f(filename);
+            if(!f)
+                std::cerr << "cannot open file" << std::endl;
+            std::string ctx((std::istreambuf_iterator<char>(f)),
+                             std::istreambuf_iterator<char>());
+            f.close();
+
+            std::string size  = std::to_string(ctx.length());
+            std::cout << "Sending " << filename << " with size of " << size << std::endl;
+            conn->SendMessage(size);
+            msg = conn->GetMessage();
+            std::cout << msg << std::endl;
+            conn->SendMessage(ctx);
             msg = conn->GetMessage();
             if(msg=="error")
                 break;

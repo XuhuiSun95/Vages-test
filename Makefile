@@ -2,19 +2,16 @@ CXX=g++
 CC=gcc
 CFLAGS=-Wall -g
 CXXFLAGS=-std=c++11 -D__STDC_CONSTANT_MACROS
-LDFLAGS=-I./include -L./lib -lavcodec -lavformat -lavutil -lavfilter -lavdevice -lswresample -lpostproc -lswscale -lm
+LDFLAGS=-I./include -L./lib -lavcodec -lavformat -lavutil -lm
 RM=rm -rf
 
-all: server client test
+all: server client
 
 server:
-	$(CXX) $(CXXFLAGS) $(CFLAGS) src/server/*.cpp -o server_tcp $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) src/server/*.cpp -o server_tcp $(LDFLAGS)
 
 client:
-	$(CXX) $(CXXFLAGS) $(CFLAGS) src/client/*.cpp -o client_tcp
-
-test:
-	$(CXX) $(CXXFLAGS) $(CFLAGS) src/demuxing_decoding.cpp -o test $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) src/client/*.cpp -o client_tcp
 
 clean:
-	$(RM) server_tcp client_tcp test *.dSYM img_processed/output*
+	$(RM) server_tcp client_tcp *.dSYM img_processed/output* *.pgm

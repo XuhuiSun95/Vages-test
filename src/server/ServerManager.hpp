@@ -6,6 +6,8 @@
 #include "Decoder.hpp"
 #include <thread>
 #include <chrono>
+#include <fstream>
+#include <streambuf>
 
 class ServerManager {
 

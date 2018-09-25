@@ -46,15 +46,42 @@ bool ClientSocket::Valid() {
     return mValid;
 }
 
-std::string ClientSocket::GetMessage() {
+void ClientSocket::Handshack() {
 
     mValread = read(mSockfd, mBuffer, 1024);
     std::string message = mBuffer;
     memset(mBuffer, 0, sizeof(mBuffer));
-    std::string reply = "Success received";
-    send(mSockfd, reply.c_str(), reply.length(), 0);
+}
 
-    return message;
+std::string ClientSocket::GetMessage() {
+
+    int size;
+    std::string message;
+    std::string reply;
+
+    mValread = read(mSockfd, mBuffer, 1024);
+    std::string header = mBuffer;
+    memset(mBuffer, 0, sizeof(mBuffer));
+    if(header=="done")
+        return header;
+    if(isdigit(header[0])) {
+        size = std::stoi(header);
+    
+        reply = "okay";
+        send(mSockfd, reply.c_str(), reply.length(), 0);
+    
+        while(size) {
+            mValread = read(mSockfd, mBuffer, 1024);
+            message += mBuffer;
+            size -= mValread;
+            memset(mBuffer, 0, sizeof(mBuffer));
+        }
+        reply = "Success received";
+        send(mSockfd, reply.c_str(), reply.length(), 0);
+
+        return message;
+    }
+    return "-1";
 }
 
 ClientSocket::ClientSocket() {

@@ -18,6 +18,7 @@ public:
 
     void Init(const int& port);
     bool Valid();
+    void Handshack();
     std::string GetMessage();
 
 private:
