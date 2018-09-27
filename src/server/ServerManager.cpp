@@ -28,6 +28,8 @@ void ServerManager::Run() {
     while(mSocket->Valid()) {
 
         int sockfd = mSocket->Accept();
+        if(sockfd==-1)
+            continue;
         std::thread t(&ServerManager::NewConn, this, sockfd);
         t.detach();
     }
